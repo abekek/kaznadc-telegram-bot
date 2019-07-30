@@ -7,5 +7,4 @@ Currently, KazNADC does not have any professional tools to gather this informati
 There is one file which I didn't include in this repository, because it's a Certificate file written in .json. Also, in some lines of code there are no String values because they represent private TOKENs and Certificates.
 
 ## Hosting
-Bot has not been hosted yet, so if you will want to test it, text me!
-I'm planning to host it on Heroku
+Bot is being hosted on Heroku.
