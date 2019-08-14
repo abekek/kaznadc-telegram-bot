@@ -258,27 +258,32 @@ def send_faq(bot, update):
     elif(type_of_user_int == 1):
         athlete_login(bot, update)
 
+# def send_question(bot, update):
+#     bot.send_chat_action(chat_id=update.message.chat_id , action = telegram.ChatAction.TYPING)
+#     time.sleep(1)
+#     #TODO: send the link
+#     bot.send_message(chat_id=update.message.chat_id, text=flag.flagize(':RU:') + ' Введите свой вопрос сюда' + '\n\n' + flag.flagize(':KZ:') + ' Өз сұрағыңызды осында енгізіңіз', reply_markup = ForceReply(force_reply=True))
+
 def send_question(bot, update):
     bot.send_chat_action(chat_id=update.message.chat_id , action = telegram.ChatAction.TYPING)
     time.sleep(1)
-    #TODO: send the link
-    bot.send_message(chat_id=update.message.chat_id, text=flag.flagize(':RU:') + ' Введите свой вопрос сюда' + '\n\n' + flag.flagize(':KZ:') + ' Өз сұрағыңызды осында енгізіңіз', reply_markup = ForceReply(force_reply=True))
+    bot.send_message(chat_id=update.message.chat_id, text=flag.flagize(':KZ:') + ' Осы ботты пайдаланып, сұрақ жазыңыз'+ '\n\n' + flag.flagize(':RU:') + ' Задайте свой вопрос этому боту' + '\n\n' + 'https://t.me/kaznadc_support_bot', reply_markup = ForceReply(force_reply=True))
 
-def send_response(bot, update, user_question):
-    bot.send_message(chat_id=196842217, text= '*Вопрос пользователя!*\n\n'+ user_question, parse_mode=telegram.ParseMode.MARKDOWN)
-    bot.send_chat_action(chat_id=update.message.chat_id , action = telegram.ChatAction.TYPING)
-    time.sleep(1)
-    bot.send_message(chat_id=update.message.chat_id, text=flag.flagize(':RU:') + ' Мы рассмотрим ваш вопрос!' + '\n\n' + flag.flagize(':KZ:') + ' Біз сіздің сұрағыңызды қарастырамыз!')
+# def send_response(bot, update, user_question):
+#     bot.send_message(chat_id=196842217, text= '*Вопрос пользователя!*\n\n'+ user_question, parse_mode=telegram.ParseMode.MARKDOWN)
+#     bot.send_chat_action(chat_id=update.message.chat_id , action = telegram.ChatAction.TYPING)
+#     time.sleep(1)
+#     bot.send_message(chat_id=update.message.chat_id, text=flag.flagize(':RU:') + ' Мы рассмотрим ваш вопрос!' + '\n\n' + flag.flagize(':KZ:') + ' Біз сіздің сұрағыңызды қарастырамыз!')
 
-def receive_question(bot, update):
-    user_question = update.message.text
-    send_response(bot, update, user_question)
-    if(type_of_user_int == 0):
-        guest_login(bot, update)
-        return GUEST
-    elif(type_of_user_int == 1):
-        athlete_login(bot, update)
-        return ATHLETE
+# def receive_question(bot, update):
+#     user_question = update.message.text
+#     send_response(bot, update, user_question)
+#     if(type_of_user_int == 0):
+#         guest_login(bot, update)
+#         return GUEST
+#     elif(type_of_user_int == 1):
+#         athlete_login(bot, update)
+#         return ATHLETE
 
 def send_action(action):
     def decorator(func):
@@ -317,7 +322,7 @@ def main():
             REGISTER: [MessageHandler(Filters.contact, get_user_data, pass_user_data=True, pass_chat_data=True)], 
             SEND: [RegexHandler('^(Тамақтану/Питание|Экскреция/Экскреция|Орналасуы/Местоположение|Артқа/Назад)$', data_choice)],
             LOCATION: [MessageHandler(Filters.location, get_user_location, pass_user_data=True, pass_chat_data=True)], 
-            QUESTION: [MessageHandler(Filters.text, receive_question)], 
+            # QUESTION: [MessageHandler(Filters.text, receive_question)], 
             FOOD: [MessageHandler(Filters.text, get_user_food, pass_user_data=True, pass_chat_data=True)],
             EXCRETE: [MessageHandler(Filters.text, get_user_excrete, pass_user_data=True, pass_chat_data=True)]
         },
