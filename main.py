@@ -78,7 +78,7 @@ def guest_choice(bot, update):
         send_faq(bot, update)
     elif(update.message.text == 'Сұрақ қою/Задать вопрос'):
         send_question(bot, update)
-        return QUESTION
+        return GUEST
     elif(update.message.text == 'Артқа/Назад'):
         start(bot, update)
         return TYPE
@@ -143,7 +143,7 @@ def athlete_choice(bot, update):
         send_faq(bot, update)
     elif(update.message.text == 'Сұрақ қою/Задать вопрос'):
         send_question(bot, update)
-        return QUESTION
+        return ATHLETE
     elif(update.message.text == 'Артқа/Назад'):
         start(bot, update)
         return TYPE
@@ -267,7 +267,7 @@ def send_faq(bot, update):
 def send_question(bot, update):
     bot.send_chat_action(chat_id=update.message.chat_id , action = telegram.ChatAction.TYPING)
     time.sleep(1)
-    bot.send_message(chat_id=update.message.chat_id, text=flag.flagize(':KZ:') + ' Осы ботты пайдаланып, сұрақ жазыңыз'+ '\n\n' + flag.flagize(':RU:') + ' Задайте свой вопрос этому боту' + '\n\n' + 'https://t.me/kaznadc_support_bot', reply_markup = ForceReply(force_reply=True))
+    bot.send_message(chat_id=update.message.chat_id, text=flag.flagize(':KZ:') + ' Осы ботты пайдаланып, сұрақ жазыңыз'+ '\n\n' + flag.flagize(':RU:') + ' Задайте свой вопрос этому боту' + '\n\n' + 'https://t.me/kaznadc_support_bot')
 
 # def send_response(bot, update, user_question):
 #     bot.send_message(chat_id=196842217, text= '*Вопрос пользователя!*\n\n'+ user_question, parse_mode=telegram.ParseMode.MARKDOWN)
