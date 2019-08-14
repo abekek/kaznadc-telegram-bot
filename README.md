@@ -7,6 +7,8 @@ Currently, KazNADC does not have any professional tools to gather this informati
 Press ```/start``` to start using the bot
 Press ```/cancel``` if bot is not responding
 
+<img src="images/sc_start.jpg" alt="drawing" width="350"/>
+
 **Note!** If bot is not responding try to use ```/start``` as well
 
 ## Files and Code
@@ -35,6 +37,8 @@ def get_user_data(bot, update, user_data, chat_data):
     ...
 ```
 
+<img src="images/sc_cont_req.jpg" alt="drawing" width="350"/>
+
 ### Getting User's location (latitude, longitude)
 It works the same as with contact information
 ```
@@ -54,8 +58,11 @@ def get_user_location(bot, update, user_data, chat_data):
     longitude = update.message.location.longitude
     ...
 ```
+<img src="images/sc_loc_req.jpg" alt="drawing" width="350"/>
 
 ### Using Firebase Realtime Database to save User's information
+<img src="images/sc_loc.jpg" alt="drawing" width="350"/>
+
 ```
 import firebase_admin
 from firebase_admin import credentials
