@@ -39,63 +39,63 @@ type_of_user_int = 0
 def start(bot, update):
     bot.send_chat_action(chat_id=update.message.chat_id , action = telegram.ChatAction.TYPING)
     time.sleep(1)
-    custom_keyboard = [['Спортсмен/Спортшы'], ['Гость/Қонақ']]
+    custom_keyboard = [['Спортшы/Спортсмен'], ['Қонақ/Гость']]
     reply_markup = telegram.ReplyKeyboardMarkup(custom_keyboard)
-    bot.send_message(chat_id=update.message.chat_id, text=flag.flagize(':RU:') +' Кто вы?' + '\n\n' + flag.flagize(':KZ:') + ' Сіз кімсіз?', reply_markup=reply_markup)
+    bot.send_message(chat_id=update.message.chat_id, text=flag.flagize(':KZ:') + ' Сіз кімсіз?' + '\n\n' + flag.flagize(':RU:') +' Кто вы?', reply_markup=reply_markup)
     reply_markup = telegram.ReplyKeyboardRemove()
     return TYPE
 
 def type_of_user(bot, update):
-    if(update.message.text == 'Гость/Қонақ'):
+    if(update.message.text == 'Қонақ/Гость'):
         guest_login(bot, update)
         return GUEST
-    if(update.message.text == 'Спортсмен/Спортшы'):
+    if(update.message.text == 'Спортшы/Спортсмен'):
         athlete_auth(bot, update)
         return FIRST
 
 def athlete_login(bot, update):
     bot.send_chat_action(chat_id=update.message.chat_id , action = telegram.ChatAction.TYPING)
     time.sleep(1)
-    custom_keyboard = [['Список документов/Құжаттар тізімі', 'FAQ'], ['Отправить данные/Деректерді жіберу'], ['Задать вопрос/Сұрақ қою'], ['Назад/Артқа']]
+    custom_keyboard = [['Құжаттар тізімі/Список документов', 'FAQ'], ['Деректерді жіберу/Отправить данные'], ['Сұрақ қою/Задать вопрос'], ['Артқа/Назад']]
     reply_markup = telegram.ReplyKeyboardMarkup(custom_keyboard)
-    bot.send_message(chat_id=update.message.chat_id, text=flag.flagize(':RU:') + ' Что вы хотите сделать?' + '\n\n' + flag.flagize(':KZ:') + ' Сіз не істегіңіз келеді?', reply_markup=reply_markup)
+    bot.send_message(chat_id=update.message.chat_id, text=flag.flagize(':KZ:') + ' Сіз не істегіңіз келеді?' + '\n\n' + flag.flagize(':RU:') + ' Что вы хотите сделать?', reply_markup=reply_markup)
     reply_markup = telegram.ReplyKeyboardRemove()
 
 def guest_login(bot, update):
     bot.send_chat_action(chat_id=update.message.chat_id , action = telegram.ChatAction.TYPING)
     time.sleep(1)
-    custom_keyboard = [['Список документов/Құжаттар тізімі', 'FAQ'], ['Задать вопрос/Сұрақ қою'], ['Назад/Артқа']]
+    custom_keyboard = [['Құжаттар тізімі/Список документов', 'FAQ'], ['Сұрақ қою/Задать вопрос'], ['Артқа/Назад']]
     reply_markup = telegram.ReplyKeyboardMarkup(custom_keyboard)
-    bot.send_message(chat_id=update.message.chat_id, text=flag.flagize(':RU:') + ' Что вы хотите сделать?' + '\n\n' + flag.flagize(':KZ:') + ' Сіз не істегіңіз келеді?', reply_markup=reply_markup)
+    bot.send_message(chat_id=update.message.chat_id, text=flag.flagize(':KZ:') + ' Сіз не істегіңіз келеді?'+ '\n\n' + flag.flagize(':RU:') + ' Что вы хотите сделать?', reply_markup=reply_markup)
     reply_markup = telegram.ReplyKeyboardRemove()
 
 def guest_choice(bot, update):
     global type_of_user_int
     type_of_user_int = 0
-    if(update.message.text == 'Список документов/Құжаттар тізімі'):
+    if(update.message.text == 'Құжаттар тізімі/Список документов'):
         send_documents(bot, update)
     elif(update.message.text == 'FAQ'):
         send_faq(bot, update)
-    elif(update.message.text == 'Задать вопрос/Сұрақ қою'):
+    elif(update.message.text == 'Сұрақ қою/Задать вопрос'):
         send_question(bot, update)
         return QUESTION
-    elif(update.message.text == 'Назад/Артқа'):
+    elif(update.message.text == 'Артқа/Назад'):
         start(bot, update)
         return TYPE
 
 def first_time_question(bot, update):
-    if(update.message.text == 'Да/Иә'):
+    if(update.message.text == 'Иә/Да'):
         send_phone_number(bot, update)
         return REGISTER
-    elif(update.message.text == 'Нет/Жоқ'):
+    elif(update.message.text == 'Жоқ/Нет'):
         start(bot, update)
         return TYPE
 
 def send_phone_number(bot, update):
-    contact_keyboard = telegram.KeyboardButton(text="Отправить номер телефона/Телефон нөмірін жіберу", request_contact=True)
+    contact_keyboard = telegram.KeyboardButton(text="Телефон нөмірін жіберу/Отправить номер телефона", request_contact=True)
     custom_keyboard = [[contact_keyboard ]]
     reply_markup = telegram.ReplyKeyboardMarkup(custom_keyboard)
-    bot.send_message(chat_id=update.message.chat_id, text=flag.flagize(':RU:') + " Отправьте нам свои данные" + '\n\n' + flag.flagize(':KZ:') + ' Бізге өз деректеріңізді жіберіңіз', reply_markup=reply_markup)
+    bot.send_message(chat_id=update.message.chat_id, text=flag.flagize(':KZ:') + ' Бізге өз деректеріңізді жіберіңіз'+ '\n\n' + flag.flagize(':RU:') + " Отправьте нам свои данные", reply_markup=reply_markup)
     reply_markup = telegram.ReplyKeyboardRemove()
 
 def get_user_data(bot, update, user_data, chat_data):
@@ -125,56 +125,56 @@ def save_user_data(bot, update, phone_number, first_name, user_id):
 def athlete_auth(bot, update):
     bot.send_chat_action(chat_id=update.message.chat_id, action = telegram.ChatAction.TYPING)
     time.sleep(1)
-    custom_keyboard = [['Да/Иә', 'Нет/Жоқ']]
+    custom_keyboard = [['Иә/Да', 'Жоқ/Нет']]
     reply_markup = telegram.ReplyKeyboardMarkup(custom_keyboard)
-    bot.send_message(chat_id=update.message.chat_id, text=flag.flagize(':RU:') + ' Хотите авторизоваться?' + '\n\n' + flag.flagize(':KZ:') + ' Авторланғыңыз келе ме?', reply_markup=reply_markup)
+    bot.send_message(chat_id=update.message.chat_id, text=flag.flagize(':KZ:') + ' Авторланғыңыз келе ме?'+ '\n\n' + flag.flagize(':RU:') + ' Хотите авторизоваться?', reply_markup=reply_markup)
     reply_markup = telegram.ReplyKeyboardRemove()             
     return FIRST
 
 def athlete_choice(bot, update):
     global type_of_user_int
     type_of_user_int = 1
-    if(update.message.text == 'Список документов/Құжаттар тізімі'):
+    if(update.message.text == 'Құжаттар тізімі/Список документов'):
         send_documents(bot, update)
-    elif(update.message.text == 'Отправить данные/Деректерді жіберу'):
+    elif(update.message.text == 'Деректерді жіберу/Отправить данные'):
         send_data(bot, update)
         return SEND
     elif(update.message.text == 'FAQ'):
         send_faq(bot, update)
-    elif(update.message.text == 'Задать вопрос/Сұрақ қою'):
+    elif(update.message.text == 'Сұрақ қою/Задать вопрос'):
         send_question(bot, update)
         return QUESTION
-    elif(update.message.text == 'Назад/Артқа'):
+    elif(update.message.text == 'Артқа/Назад'):
         start(bot, update)
         return TYPE
 
 def send_data(bot, update):
     bot.send_chat_action(chat_id=update.message.chat_id , action = telegram.ChatAction.TYPING)
     time.sleep(1)
-    custom_keyboard = [['Питание/Тамақтану', 'Экскреция/Экскреция'], ['Местоположение/Орналасуы'], ['Назад/Артқа']]
+    custom_keyboard = [['Тамақтану/Питание', 'Экскреция/Экскреция'], ['Орналасуы/Местоположение'], ['Артқа/Назад']]
     reply_markup = telegram.ReplyKeyboardMarkup(custom_keyboard)
     bot.send_message(chat_id=update.message.chat_id, text=flag.flagize(':RU:') + ' Какие данные вы хотите отправить?' + '\n\n' + flag.flagize(':KZ:') + ' Қандай мәліметтерді жібергіңіз келеді?', reply_markup=reply_markup)
     reply_markup = telegram.ReplyKeyboardRemove()
 
 def data_choice(bot, update):
-    if(update.message.text == 'Местоположение/Орналасуы'):
-        location_keyboard = telegram.KeyboardButton(text="Отправить местоположение/Орналасуын жіберу " + emoji.emojize(':round_pushpin:'), request_location=True)
+    if(update.message.text == 'Орналасуы/Местоположение'):
+        location_keyboard = telegram.KeyboardButton(text="Орналасуын жіберу/Отправить местоположение " + emoji.emojize(':round_pushpin:'), request_location=True)
         custom_keyboard = [[location_keyboard ]]
         reply_markup = telegram.ReplyKeyboardMarkup(custom_keyboard)
-        bot.send_message(chat_id=update.message.chat_id, text=flag.flagize(':RU:') + " Отправьте нам своё местоположение" + '\n\n' + flag.flagize(':KZ:') + ' Өз орналасуын бізге жіберіңіз', reply_markup=reply_markup)
+        bot.send_message(chat_id=update.message.chat_id, text=flag.flagize(':KZ:') + ' Өз орналасуын бізге жіберіңіз'+ '\n\n' + flag.flagize(':RU:') + " Отправьте нам своё местоположение", reply_markup=reply_markup)
         reply_markup = telegram.ReplyKeyboardRemove()
         return LOCATION
-    elif(update.message.text == 'Питание/Тамақтану'):
+    elif(update.message.text == 'Тамақтану/Питание'):
         bot.send_chat_action(chat_id=update.message.chat_id , action = telegram.ChatAction.TYPING)
         time.sleep(1)
-        bot.send_message(chat_id=update.message.chat_id, text=flag.flagize(':RU:') + ' Что вы ели или употребляли? (напишите через запятую продукты)' + '\n\n' + flag.flagize(':KZ:') + ' Сіз немен тамақтандыңыз немесе қолдандыңыз? (өнімдерді үтір арқылы жазыңыз)', reply_markup = ForceReply(force_reply=True))
+        bot.send_message(chat_id=update.message.chat_id, text=flag.flagize(':KZ:') + ' Сіз немен тамақтандыңыз немесе қолдандыңыз? (өнімдерді үтір арқылы жазыңыз)'+ '\n\n' + flag.flagize(':RU:') + ' Что вы ели или употребляли? (напишите через запятую продукты)', reply_markup = ForceReply(force_reply=True))
         return FOOD
     elif(update.message.text == 'Экскреция/Экскреция'):
         bot.send_chat_action(chat_id=update.message.chat_id , action = telegram.ChatAction.TYPING)
         time.sleep(1)
-        bot.send_message(chat_id=update.message.chat_id, text=flag.flagize(':RU:') + ' Опишите ваш процесс экскреции' + '\n\n' + flag.flagize(':KZ:') + ' Сіздің экскреция процесін сипаттаңыз', reply_markup = ForceReply(force_reply=True))
+        bot.send_message(chat_id=update.message.chat_id, text=flag.flagize(':KZ:') + ' Сіздің экскреция процесін сипаттаңыз'+ '\n\n' + flag.flagize(':RU:') + ' Опишите ваш процесс экскреции', reply_markup = ForceReply(force_reply=True))
         return EXCRETE
-    elif(update.message.text == 'Назад/Артқа'):
+    elif(update.message.text == 'Артқа/Назад'):
         athlete_login(bot, update)
         return ATHLETE
 
@@ -243,7 +243,7 @@ def send_documents(bot, update):
         [InlineKeyboardButton('Программа мониторинга 2019', url='https://drive.google.com/open?id=1CrGj-eXl5EqmPxBXyki5m9_PgI9vb_pQ')]
     ]
     inline_markup = telegram.InlineKeyboardMarkup(inline_keyboard)
-    bot.send_message(chat_id=update.message.chat_id, text=flag.flagize(':RU:') + ' Отлично! Выберите нужный вам документ' + '\n\n' + flag.flagize(':KZ:') + ' Өте жақсы! Қажетті құжатты таңдаңыз', reply_markup=inline_markup, parse_mode=telegram.ParseMode.MARKDOWN)
+    bot.send_message(chat_id=update.message.chat_id, text=flag.flagize(':KZ:') + ' Өте жақсы! Қажетті құжатты таңдаңыз'+ '\n\n' + flag.flagize(':RU:') + ' Отлично! Выберите нужный вам документ', reply_markup=inline_markup, parse_mode=telegram.ParseMode.MARKDOWN)
     if(type_of_user_int == 0):
         guest_login(bot, update)
     elif(type_of_user_int == 1):
@@ -261,6 +261,7 @@ def send_faq(bot, update):
 def send_question(bot, update):
     bot.send_chat_action(chat_id=update.message.chat_id , action = telegram.ChatAction.TYPING)
     time.sleep(1)
+    #TODO: send the link
     bot.send_message(chat_id=update.message.chat_id, text=flag.flagize(':RU:') + ' Введите свой вопрос сюда' + '\n\n' + flag.flagize(':KZ:') + ' Өз сұрағыңызды осында енгізіңіз', reply_markup = ForceReply(force_reply=True))
 
 def send_response(bot, update, user_question):
@@ -308,13 +309,13 @@ def main():
         entry_points = [CommandHandler('start', start)],
 
         states = {
-            TYPE: [RegexHandler('^(Спортсмен/Спортшы|Гость/Қонақ)$', type_of_user)],
+            TYPE: [RegexHandler('^(Спортшы/Спортсмен|Қонақ/Гость)$', type_of_user)],
             #ADMIN: [RegexHandler('^(Список спортсменов|Выход)$', guest_choice)],
-            GUEST: [RegexHandler('^(Список документов/Құжаттар тізімі|FAQ|Задать вопрос/Сұрақ қою|Назад/Артқа)$', guest_choice)],
-            ATHLETE: [RegexHandler('^(Список документов/Құжаттар тізімі|Отправить данные/Деректерді жіберу|FAQ|Задать вопрос/Сұрақ қою|Назад/Артқа)$', athlete_choice)],
-            FIRST: [RegexHandler('^(Да/Иә|Нет/Жоқ)$', first_time_question)],
+            GUEST: [RegexHandler('^(Құжаттар тізімі/Список документов|FAQ|Сұрақ қою/Задать вопрос|Артқа/Назад)$', guest_choice)],
+            ATHLETE: [RegexHandler('^(Құжаттар тізімі/Список документов|Деректерді жіберу/Отправить данные|FAQ|Сұрақ қою/Задать вопрос|Артқа/Назад)$', athlete_choice)],
+            FIRST: [RegexHandler('^(Иә/Да|Жоқ/Нет)$', first_time_question)],
             REGISTER: [MessageHandler(Filters.contact, get_user_data, pass_user_data=True, pass_chat_data=True)], 
-            SEND: [RegexHandler('^(Питание/Тамақтану|Экскреция/Экскреция|Местоположение/Орналасуы|Назад/Артқа)$', data_choice)],
+            SEND: [RegexHandler('^(Тамақтану/Питание|Экскреция/Экскреция|Орналасуы/Местоположение|Артқа/Назад)$', data_choice)],
             LOCATION: [MessageHandler(Filters.location, get_user_location, pass_user_data=True, pass_chat_data=True)], 
             QUESTION: [MessageHandler(Filters.text, receive_question)], 
             FOOD: [MessageHandler(Filters.text, get_user_food, pass_user_data=True, pass_chat_data=True)],
