@@ -10,7 +10,6 @@ from telegram import ChatAction, InlineKeyboardButton, ForceReply, KeyboardButto
 import logging
 import os
 import psycopg2
-#from firebase import firebase
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import db
@@ -99,17 +98,11 @@ def send_phone_number(bot, update):
     reply_markup = telegram.ReplyKeyboardRemove()
 
 def get_user_data(bot, update, user_data, chat_data):
-    #print(update.message.contact)
     phone_number = update.message.contact.phone_number
-    #phone_number = phone_number.replace("\\", "")
     first_name = update.message.contact.first_name
-    #first_name = first_name.replace("\\", "")
     user_id = str(update.message.contact.user_id)
     global user_id_global
     user_id_global = user_id
-    #user_id = user_id.replace("\\", "")
-    # user_data_dict = {'phone_number': phone_number, 'first_name': first_name, 'user_id': user_id}
-    # user_data_json = json.dumps(user_data_dict)
     save_user_data(bot, update, phone_number, first_name, user_id)
     athlete_login(bot, update)
     return ATHLETE
@@ -240,7 +233,9 @@ def send_documents(bot, update):
         [InlineKeyboardButton('Международный стандарт по терапевтическому использованию', url='https://drive.google.com/open?id=1R4SGuAaSIpntYEQTzpy6SMpGekBGsK97')],
         [InlineKeyboardButton('Обзор основных изменений в Запрещенном списке 2019', url='https://drive.google.com/open?id=1I3a6QTyVUm6tifrF7XjIBQ6u88-Io9Q0')],
         [InlineKeyboardButton('Положение по терапевтическому использованию',url='https://drive.google.com/open?id=1u_lGQdDbx_sziXIuTouBs0RWoQ0cTm1u')],
-        [InlineKeyboardButton('Программа мониторинга 2019', url='https://drive.google.com/open?id=1CrGj-eXl5EqmPxBXyki5m9_PgI9vb_pQ')]
+        [InlineKeyboardButton('Программа мониторинга 2019', url='https://drive.google.com/open?id=1CrGj-eXl5EqmPxBXyki5m9_PgI9vb_pQ')],
+        [InlineKeyboardButton('2020-Prohibited-List-RUS', url='https://drive.google.com/open?id=1sgEq5mdVykQNPF2M0IAih0PlpJjxYmVE')],
+        [InlineKeyboardButton('Программа мониторинга 2020', url='https://drive.google.com/open?id=1MjQWARhEnsoPSTZpHjPZmB_sEzFJw2nQ')]
     ]
     inline_markup = telegram.InlineKeyboardMarkup(inline_keyboard)
     bot.send_message(chat_id=update.message.chat_id, text=flag.flagize(':KZ:') + ' Өте жақсы! Қажетті құжатты таңдаңыз'+ '\n\n' + flag.flagize(':RU:') + ' Отлично! Выберите нужный вам документ', reply_markup=inline_markup, parse_mode=telegram.ParseMode.MARKDOWN)
