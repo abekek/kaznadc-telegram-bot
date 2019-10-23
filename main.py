@@ -10,6 +10,7 @@ from telegram import ChatAction, InlineKeyboardButton, ForceReply, KeyboardButto
 import logging
 import os
 import psycopg2
+#from firebase import firebase
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import db
@@ -23,7 +24,7 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 
 logger = logging.getLogger(__name__)
 
-TYPE, ATHLETE, GUEST, FIRST, REGISTER, SEND, LOCATION, QUESTION, FOOD, EXCRETE = range(10)
+TYPE, ATHLETE, GUEST, FIRST, REGISTER, SEND, LOCATION, QUESTION, FOOD = range(9)
 
 cred = credentials.Certificate(certificate)
 
@@ -98,11 +99,17 @@ def send_phone_number(bot, update):
     reply_markup = telegram.ReplyKeyboardRemove()
 
 def get_user_data(bot, update, user_data, chat_data):
+    #print(update.message.contact)
     phone_number = update.message.contact.phone_number
+    #phone_number = phone_number.replace("\\", "")
     first_name = update.message.contact.first_name
+    #first_name = first_name.replace("\\", "")
     user_id = str(update.message.contact.user_id)
     global user_id_global
     user_id_global = user_id
+    #user_id = user_id.replace("\\", "")
+    # user_data_dict = {'phone_number': phone_number, 'first_name': first_name, 'user_id': user_id}
+    # user_data_json = json.dumps(user_data_dict)
     save_user_data(bot, update, phone_number, first_name, user_id)
     athlete_login(bot, update)
     return ATHLETE
@@ -144,7 +151,7 @@ def athlete_choice(bot, update):
 def send_data(bot, update):
     bot.send_chat_action(chat_id=update.message.chat_id , action = telegram.ChatAction.TYPING)
     time.sleep(1)
-    custom_keyboard = [['Тамақтану/Питание', 'Экскреция/Экскреция'], ['Орналасуы/Местоположение'], ['Артқа/Назад']]
+    custom_keyboard = [['Тамақтану/Питание'], ['Орналасуы/Местоположение'], ['Артқа/Назад']]
     reply_markup = telegram.ReplyKeyboardMarkup(custom_keyboard)
     bot.send_message(chat_id=update.message.chat_id, text=flag.flagize(':RU:') + ' Какие данные вы хотите отправить?' + '\n\n' + flag.flagize(':KZ:') + ' Қандай мәліметтерді жібергіңіз келеді?', reply_markup=reply_markup)
     reply_markup = telegram.ReplyKeyboardRemove()
@@ -162,11 +169,11 @@ def data_choice(bot, update):
         time.sleep(1)
         bot.send_message(chat_id=update.message.chat_id, text=flag.flagize(':KZ:') + ' Сіз немен тамақтандыңыз немесе қолдандыңыз? (өнімдерді үтір арқылы жазыңыз)'+ '\n\n' + flag.flagize(':RU:') + ' Что вы ели или употребляли? (напишите через запятую продукты)', reply_markup = ForceReply(force_reply=True))
         return FOOD
-    elif(update.message.text == 'Экскреция/Экскреция'):
-        bot.send_chat_action(chat_id=update.message.chat_id , action = telegram.ChatAction.TYPING)
-        time.sleep(1)
-        bot.send_message(chat_id=update.message.chat_id, text=flag.flagize(':KZ:') + ' Сіздің экскреция процесін сипаттаңыз'+ '\n\n' + flag.flagize(':RU:') + ' Опишите ваш процесс экскреции', reply_markup = ForceReply(force_reply=True))
-        return EXCRETE
+    # elif(update.message.text == 'Экскреция/Экскреция'):
+    #     bot.send_chat_action(chat_id=update.message.chat_id , action = telegram.ChatAction.TYPING)
+    #     time.sleep(1)
+    #     bot.send_message(chat_id=update.message.chat_id, text=flag.flagize(':KZ:') + ' Сіздің экскреция процесін сипаттаңыз'+ '\n\n' + flag.flagize(':RU:') + ' Опишите ваш процесс экскреции', reply_markup = ForceReply(force_reply=True))
+    #     return EXCRETE
     elif(update.message.text == 'Артқа/Назад'):
         athlete_login(bot, update)
         return ATHLETE
@@ -187,21 +194,21 @@ def save_food_data(bot, update, food_data, user_id):
        'name': food_data
    })
 
-def get_user_excrete(bot, update, user_data, chat_data):
-    excrete_data = update.message.text
-    user_id = str(update.message.chat_id)
-    save_excrete_data(bot, update, excrete_data, user_id)
-    athlete_login(bot, update)
-    return ATHLETE
+# def get_user_excrete(bot, update, user_data, chat_data):
+#     excrete_data = update.message.text
+#     user_id = str(update.message.chat_id)
+#     save_excrete_data(bot, update, excrete_data, user_id)
+#     athlete_login(bot, update)
+#     return ATHLETE
 
-def save_excrete_data(bot, update, excrete_data, user_id):
-    global ref
-    # global user_id_global
-    now = datetime.datetime.now()
-    excrete_ref = ref.child(user_id + '/data/' + str(now.strftime("%Y-%m-%d")) + '/' + str(now.strftime("%H:%M") + '/excrete'))
-    excrete_ref.update({
-       'name': excrete_data 
-   })
+# def save_excrete_data(bot, update, excrete_data, user_id):
+#     global ref
+#     # global user_id_global
+#     now = datetime.datetime.now()
+#     excrete_ref = ref.child(user_id + '/data/' + str(now.strftime("%Y-%m-%d")) + '/' + str(now.strftime("%H:%M") + '/excrete'))
+#     excrete_ref.update({
+#        'name': excrete_data 
+#    })
 
 def get_user_location(bot, update, user_data, chat_data):
     latitude = update.message.location.latitude
@@ -315,11 +322,11 @@ def main():
             ATHLETE: [RegexHandler('^(Құжаттар тізімі/Список документов|Деректерді жіберу/Отправить данные|FAQ|Сұрақ қою/Задать вопрос|Артқа/Назад)$', athlete_choice)],
             FIRST: [RegexHandler('^(Иә/Да|Жоқ/Нет)$', first_time_question)],
             REGISTER: [MessageHandler(Filters.contact, get_user_data, pass_user_data=True, pass_chat_data=True)], 
-            SEND: [RegexHandler('^(Тамақтану/Питание|Экскреция/Экскреция|Орналасуы/Местоположение|Артқа/Назад)$', data_choice)],
+            SEND: [RegexHandler('^(Тамақтану/Питание|Орналасуы/Местоположение|Артқа/Назад)$', data_choice)],
             LOCATION: [MessageHandler(Filters.location, get_user_location, pass_user_data=True, pass_chat_data=True)], 
             # QUESTION: [MessageHandler(Filters.text, receive_question)], 
-            FOOD: [MessageHandler(Filters.text, get_user_food, pass_user_data=True, pass_chat_data=True)],
-            EXCRETE: [MessageHandler(Filters.text, get_user_excrete, pass_user_data=True, pass_chat_data=True)]
+            FOOD: [MessageHandler(Filters.text, get_user_food, pass_user_data=True, pass_chat_data=True)]
+            # EXCRETE: [MessageHandler(Filters.text, get_user_excrete, pass_user_data=True, pass_chat_data=True)]
         },
 
         fallbacks=[CommandHandler('cancel', cancel)]
