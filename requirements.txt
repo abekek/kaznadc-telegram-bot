@@ -1,7 +1,7 @@
 appdirs==1.4.3
 certifi==2018.1.18
 Cython==0.23
-Django==1.10.6
+Django==1.11.29
 docutils==0.13.1
 packaging==16.8
 pipenv==11.8.0
